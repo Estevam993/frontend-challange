@@ -1,5 +1,9 @@
 'use client'
-import { MainContent, SearchBar, Logo, Filters } from '@/components';
+import { useEffect, useState } from 'react';
+
+import getCharacters from '@/services/getCharacters';
+
+import { MainContent, MarvelHeader, HeroCard, HerosContainer, Spinner } from '@/components';
 import styled from 'styled-components';
 
 const Body = styled.div`
@@ -11,20 +15,28 @@ const Body = styled.div`
 `
 
 export default function Home() {
-  return (
+  const [characters, setCharacters] = useState([])
+
+  useEffect(() => {
+    const fetchCharacters = async () => {
+      const data = await getCharacters(0,20);
+      setCharacters(data);
+    };
+
+    fetchCharacters();
+  }, []);
+
+  console.log(characters)
+
+    return (
     <Body>
       <MainContent>
-        {/*
-         // TODO transformar isso em um componente
-        */}
-        <>
-          <Logo/>
-          <h1 className='h1'>EXPLORE O UNIVERSO</h1>
-          <p className='subtitle' >Mergulhe no domínio deslumbrante de todos os personagens clássicos que você ama - e aqueles que você descobrirá em breve!</p>
-          <SearchBar />
-          <Filters />
-        </>
-
+        <MarvelHeader />
+        <HerosContainer>
+          {characters?.length > 0 ? characters.map((hero, index) => (
+            <HeroCard key={index} name={hero.name} thumb={hero.thumbnail.path} extension={hero.thumbnail.extension} />
+          )) : (<Spinner/>)}
+        </HerosContainer>
       </MainContent>
     </Body>
   );

@@ -3,6 +3,7 @@
 Bibliotecas utilizadas:
 
 - Styled Components
+- Axios
 
 ## Como consumir a API da marvel?
 

@@ -16,6 +16,7 @@ export const FilterDiv = styled.div`
 	align-items: center;
 	justify-content: space-around;
 	width: 100%;
+	margin-bottom: 2rem;
 
 	@media(max-width: 600px){
 		flex-direction: column-reverse;
