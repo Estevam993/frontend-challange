@@ -16,9 +16,12 @@ const Body = styled.div`
 `
 
 export default function Home() {
-  const savedFavorites = JSON.parse(localStorage.getItem('favorites'))
+  useEffect(() => {
+    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(savedFavorites);
+  }, []);
 
-  const [favorites, setFavorites] = useState(savedFavorites ?? [])
+  const [favorites, setFavorites] = useState([])
   const [searchType, setSearchType] = useState(false)
   const [characters, setCharacters] = useState([])
   const [search, setSearch] = useState('')
@@ -61,7 +64,7 @@ export default function Home() {
   };
 
   const isFavorited = (id) => {
-    return savedFavorites.some((hero) => hero.id === id);
+    return favorites.some((hero) => hero.id === id);
   }
 
   const handleSearchType = () => setSearchType(!searchType)

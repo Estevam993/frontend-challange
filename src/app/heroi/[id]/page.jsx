@@ -18,12 +18,17 @@ const Body = styled.div`
 `
 
 export default function Page({params}){
-  const savedFavorites = JSON.parse(localStorage.getItem('favorites'))
+  // const savedFavorites = JSON.parse(localStorage.getItem('favorites'))
 
-  const [favorites, setFavorites] = useState(savedFavorites ?? [])
+  const [favorites, setFavorites] = useState([])
   const [id, setId] = useState();
   const [hero, setHero] = useState(null);
 	const [comics, setComics] = useState([])
+
+  useEffect(() => {
+    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(savedFavorites);
+  }, []);
 
 	useEffect(() => {
     async function unwrapParams() {
@@ -85,7 +90,7 @@ export default function Page({params}){
     });
   };
 
-	const isFavorited = savedFavorites?.some((hero) => hero.id == id)
+	const isFavorited = favorites?.some((hero) => hero.id == id)
 
 	const image = hero ? hero.thumbnail.path + '.' + hero.thumbnail.extension : ''
 
