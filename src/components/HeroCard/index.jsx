@@ -7,8 +7,8 @@ import {Card, ImageWrapper, CardInfo, CustomButton} from './style'
 import heart from '../../assets/icones/heart/Path Copy 7.svg'
 import heartOutlined from '../../assets/icones/heart/Path Copy 2.png'
 
-const HeroCard = ({name, thumb, extension}) => {
-	const [favorite, setFavorite] = useState(false)
+const HeroCard = ({name, thumb, extension, addFavorite, removeFavorite,isFavorited}) => {
+	const [favorite, setFavorite] = useState(isFavorited)
 
 	const handleFavoriteChange = () => setFavorite(!favorite)
 
@@ -23,7 +23,13 @@ const HeroCard = ({name, thumb, extension}) => {
 				</ImageWrapper>
 				<CardInfo>
 					{name}
-					<CustomButton onClick={handleFavoriteChange}>
+					<CustomButton 
+						onClick={()=> {
+							handleFavoriteChange()
+							if(!favorite) addFavorite()
+							else removeFavorite()
+						}}
+					>
 						<Image src={favorite ? heart : heartOutlined} alt='Favoritar' />
 					</CustomButton>
 				</CardInfo>
