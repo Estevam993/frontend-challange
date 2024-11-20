@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const Bar = styled.div`
 	background-color: #ffe4e4;
-    height: 2.8rem;
+    height: 3.8rem;
     padding-left: 1rem;
     padding-right: 1rem;
     border-radius: 25px;

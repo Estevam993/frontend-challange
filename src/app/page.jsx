@@ -1,9 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import getCharacters from '@/services/getCharacters';
 
-import { MainContent, MarvelHeader, HeroCard, HerosContainer, Spinner } from '@/components';
+import { MainContent, MarvelHeader, HeroCard, HerosContainer, Spinner, Pagination } from '@/components';
 import styled from 'styled-components';
 
 const Body = styled.div`
@@ -16,19 +16,37 @@ const Body = styled.div`
 
 export default function Home() {
   const [characters, setCharacters] = useState([])
+  const [page, setPage] = useState(0)
+  const [favorites, setFavorites] = useState([])
+
+  const fetchCharacters = useCallback(async () => {
+    try {
+      const data = await getCharacters(page, 20);
+      setCharacters(data);
+    } catch (error) {
+      console.error("Erro ao buscar personagens:", error);
+    }
+  }, [page]);
 
   useEffect(() => {
-    const fetchCharacters = async () => {
-      const data = await getCharacters(0,20);
-      setCharacters(data);
-    };
-
     fetchCharacters();
-  }, []);
+  }, [fetchCharacters]);
 
   console.log(characters)
 
-    return (
+  const saveFavorites = (hero) => {
+    if(favorites.length <= 5){
+      setFavorites((prevFavorites) => {
+        const newFavorites = [...prevFavorites, hero]
+        setFavorites(newFavorites)
+
+        const favoritesJson = JSON.stringify(newFavorites)
+        localStorage.setItem('favorites', favoritesJson)
+      })
+    }
+  }
+
+  return (
     <Body>
       <MainContent>
         <MarvelHeader />
@@ -37,6 +55,11 @@ export default function Home() {
             <HeroCard key={index} name={hero.name} thumb={hero.thumbnail.path} extension={hero.thumbnail.extension} />
           )) : (<Spinner/>)}
         </HerosContainer>
+        <Pagination
+          setPagination={atualPage => {
+            setPage(atualPage)
+          }}
+        />
       </MainContent>
     </Body>
   );
