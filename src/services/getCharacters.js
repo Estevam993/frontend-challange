@@ -10,7 +10,6 @@ const getCharacters = async (page,limit,name) => {
     name = !!name ? `nameStartsWith=${name}&` : ''
 
     const url = `https://gateway.marvel.com/v1/public/characters?${page}${name}${limit}apikey=${publicKey}&ts=${timestamp}&hash=${hash}`
-    console.log(url)
 
     const response = await getRequest(url)
     return response

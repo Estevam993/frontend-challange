@@ -4,10 +4,10 @@ import Image from 'next/image'
 
 import {Card, ImageWrapper, CardInfo, CustomButton} from './style'
 
-import heart from '../../assets/icones/heart/Path Copy 7.svg'
-import heartOutlined from '../../assets/icones/heart/Path Copy 2.png'
+import heart from '@/assets/icones/heart/Path Copy 7.svg'
+import heartOutlined from '@/assets/icones/heart/Path Copy 2.png'
 
-const HeroCard = ({name, thumb, extension, addFavorite, removeFavorite,isFavorited}) => {
+const HeroCard = ({name, thumb, extension, addFavorite, removeFavorite, isFavorited, redirect}) => {
 	const [favorite, setFavorite] = useState(isFavorited)
 
 	const handleFavoriteChange = () => setFavorite(!favorite)
@@ -17,13 +17,12 @@ const HeroCard = ({name, thumb, extension, addFavorite, removeFavorite,isFavorit
 	return(
 		<>
 			<Card>
-				<ImageWrapper>
+				<ImageWrapper onClick={redirect}>
 					<Image src={image} layout="fill" alt='teste' />
-
 				</ImageWrapper>
 				<CardInfo>
 					{name}
-					<CustomButton 
+					<CustomButton
 						onClick={()=> {
 							handleFavoriteChange()
 							if(!favorite) addFavorite()

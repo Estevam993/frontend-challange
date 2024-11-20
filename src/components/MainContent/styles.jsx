@@ -9,6 +9,8 @@ export const MainSection = styled.div`
 	align-items: center;
 	flex-direction: column;
 	padding-bottom: 5rem;
+	padding-left: 2rem;
+	padding-right: 2rem;
 
 	@media (max-width: 600px){
 		width: 100%;

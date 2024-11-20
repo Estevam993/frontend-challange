@@ -5,6 +5,7 @@ import getCharacters from '@/services/getCharacters';
 
 import { MainContent, MarvelHeader, HeroCard, HerosContainer, Spinner, Pagination } from '@/components';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 
 const Body = styled.div`
   width: 100vw;
@@ -22,6 +23,7 @@ export default function Home() {
   const [characters, setCharacters] = useState([])
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
+  const router = useRouter()
 
   const fetchCharacters = useCallback(async () => {
     try {
@@ -54,7 +56,7 @@ export default function Home() {
       const favoritesJson = JSON.stringify(updatedFavorites);
 
       localStorage.setItem('favorites', favoritesJson);
-      return updatedFavorites; // Atualiza o estado com a lista filtrada
+      return updatedFavorites;
     });
   };
 
@@ -80,6 +82,7 @@ export default function Home() {
                   addFavorite={() => saveFavorites(hero)}
                   removeFavorite={() => removeFavorites(hero.id)}
                   isFavorited={() => isFavorited(hero.id)}
+                  redirect={() => router.push('/heroi/'+hero.id)}
                 />
               ))
             ) : (
@@ -96,6 +99,7 @@ export default function Home() {
                   addFavorite={() => saveFavorites(hero)}
                   removeFavorite={() => removeFavorites(hero.id)}
                   isFavorited={() => isFavorited(hero.id)}
+                  redirect={() => router.push('/heroi/'+hero.id)}
                 />
               ))
             ) : (
