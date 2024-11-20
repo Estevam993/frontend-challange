@@ -2,7 +2,6 @@
 
 Bibliotecas utilizadas:
 
-- React Router Dom
 - Styled Components
 
 ## Como consumir a API da marvel?
