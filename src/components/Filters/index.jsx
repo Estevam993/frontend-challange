@@ -11,7 +11,7 @@ import switchOn from '../../assets/toggle/Group 2.svg'
 import switchOff from '../../assets/toggle/Group 6.png'
 
 
-const Filters = () => {
+const Filters = ({onFilterChange}) => {
 	const [isSwitchOn, setSwitch] = useState(false)
 
 	const handleSwitchChange = () => setSwitch(!isSwitchOn)
@@ -24,7 +24,12 @@ const Filters = () => {
 					<Image src={hero} alt='Somente Favoritos' />
 					<CustomText className='sm-hide'>Ordenar por nome - A/Z</CustomText>
 				</CustomDiv>
-				<CustomButton onClick={handleSwitchChange}>
+				<CustomButton 
+					onClick={() => {
+						handleSwitchChange()
+						onFilterChange(isSwitchOn)
+					}}
+				>
 					<Image src={isSwitchOn ? switchOn : switchOff} alt={isSwitchOn ? 'Somente Favoritos' : 'Ordenar por nome'} />
 				</CustomButton>
 				<CustomDiv>

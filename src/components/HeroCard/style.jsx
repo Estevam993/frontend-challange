@@ -26,4 +26,5 @@ export const CardInfo = styled.div`
 export const CustomButton = styled.button`
 	border: transparent;
 	background: none;
+	cursor: pointer;
 `

@@ -17,24 +17,24 @@ const Body = styled.div`
 export default function Home() {
   const savedFavorites = JSON.parse(localStorage.getItem('favorites'))
 
-  const [characters, setCharacters] = useState([])
-  const [page, setPage] = useState(0)
   const [favorites, setFavorites] = useState(savedFavorites ?? [])
+  const [searchType, setSearchType] = useState(false)
+  const [characters, setCharacters] = useState([])
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(0)
 
   const fetchCharacters = useCallback(async () => {
     try {
-      const data = await getCharacters(page, 20);
+      const data = await getCharacters(page, 20,search);
       setCharacters(data);
     } catch (error) {
       console.error("Erro ao buscar personagens:", error);
     }
-  }, [page]);
+  }, [page,search]);
 
   useEffect(() => {
     fetchCharacters();
   }, [fetchCharacters]);
-
-  console.log(characters)
 
   const saveFavorites = (hero) => {
     if(favorites.length < 5){
@@ -62,32 +62,54 @@ export default function Home() {
     return savedFavorites.some((hero) => hero.id === id);
   }
 
+  const handleSearchType = () => setSearchType(!searchType)
+
   return (
     <Body>
       <MainContent>
-        <MarvelHeader />
+        <MarvelHeader changeFilter={handleSearchType} getSearch={(search) => {setSearch(search)}} />
         <HerosContainer>
-          {characters?.length > 0 ? characters.map((hero) => (
-            <HeroCard
-              key={hero.id}
-              name={hero.name}
-              thumb={hero.thumbnail.path}
-              extension={hero.thumbnail.extension}
-              addFavorite={() => {
-                saveFavorites(hero)
-              }}
-              removeFavorite={() => {
-                removeFavorites(hero.id)
-              }}
-              isFavorited={() => isFavorited(hero.id)}
-            />
-          )) : (<Spinner/>)}
+          {searchType ? (
+            favorites?.length > 0 ? (
+              favorites.map((hero) => (
+                <HeroCard
+                  key={hero.id}
+                  name={hero.name}
+                  thumb={hero.thumbnail.path}
+                  extension={hero.thumbnail.extension}
+                  addFavorite={() => saveFavorites(hero)}
+                  removeFavorite={() => removeFavorites(hero.id)}
+                  isFavorited={() => isFavorited(hero.id)}
+                />
+              ))
+            ) : (
+              <p>Nenhum favorito encontrado.</p>
+            )
+          ) : (
+            characters?.length > 0 ? (
+              characters.map((hero) => (
+                <HeroCard
+                  key={hero.id}
+                  name={hero.name}
+                  thumb={hero.thumbnail.path}
+                  extension={hero.thumbnail.extension}
+                  addFavorite={() => saveFavorites(hero)}
+                  removeFavorite={() => removeFavorites(hero.id)}
+                  isFavorited={() => isFavorited(hero.id)}
+                />
+              ))
+            ) : (
+              <Spinner />
+            )
+          )}
         </HerosContainer>
-        <Pagination
-          setPagination={atualPage => {
-            setPage(atualPage)
-          }}
-        />
+        {!searchType && (
+          <Pagination
+            setPagination={atualPage => {
+              setPage(atualPage)
+            }}
+          />
+        )}
       </MainContent>
     </Body>
   );

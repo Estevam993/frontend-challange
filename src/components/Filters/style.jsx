@@ -9,6 +9,7 @@ export const CustomDiv = styled.div`
 export const CustomButton = styled.button`
 	border: transparent;
 	background: none;
+	cursor: pointer;
 `
 
 export const FilterDiv = styled.div`
